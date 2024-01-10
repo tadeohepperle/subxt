@@ -1,6 +1,7 @@
 name: Update Artifacts
 
 on:
+    workflow_dispatch:
     schedule:
         - cron: "0 0 * * 1" # weekly on Monday at 00:00 UTC
 
