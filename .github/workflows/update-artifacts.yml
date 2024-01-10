@@ -34,12 +34,15 @@ jobs:
             - name: Rust Cache
               uses: Swatinem/rust-cache@3cf7f8cc28d1b4e7d01e3783be10a97d55d483c8 # v2.7.1
 
+            - name: Build the CLI tool
+              run: cargo build --bin subxt
+
             # Runs two processes asynchronously:
             # - one for the substrate node, timing out after 60s,
             # - and one to fetch the metadata from it with the `scripts/artifacts.sh` script.
             - name: Fetch Artifacts
               run: |
-                  { timeout 60s substrate-node --dev --tmp; } & { sleep 15s && scripts/artifacts.sh; }
+                  { timeout 60s substrate-node --dev --tmp; } & { sleep 30s && ./scripts/artifacts.sh; }
             # Generate the polkadot.rs file we use for verifying the codegen
             - name: Generate polkadot.rs File
               run: cargo run --bin subxt -- codegen --file artifacts/polkadot_metadata_full.scale | rustfmt > testing/integration-tests/src/full_client/codegen/polkadot.rs
